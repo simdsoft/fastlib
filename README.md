@@ -9,4 +9,19 @@
          // std::string value(v_start, v_end);
      });
   ```
+  or
+  ```cpp
+  std::string buffer = read_file("xxx.csv");
+  if(!buffer.empty()) {
+    char* cursor = &buffer.front();
+    while(*cursor) {
+       cursor = fastl::fast_csv_parse_line(cursor, [&](char* v_start, char* v_end) {
+           // if this column is int or double, is more Memory Efficient parse it directly
+           char endch = *v_end; // store the last char in the streaming
+           *v_end = '\0';
+           int key = atoi(v_start); // parse int value directly
+           *v_end = endch; // restore rthe last char in the stream
+       });
+   }
+  ```
 * **fast_split.hpp**: Yeah, idea same with ```fast_csv.hpp```
