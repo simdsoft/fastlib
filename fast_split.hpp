@@ -28,6 +28,7 @@
 #include <string.h>
 #include <string>
 
+namespace fastl {
 namespace internal {
 #define _REDIRECT_DELIM_INTRI(_From,_To,_CStr,_Delim) \
     inline _CStr _To(_CStr s, _Delim d) \
@@ -515,3 +516,5 @@ void splitpath(std::basic_string<_Elem>& s, _Fn func) // will convert '\\' to '/
     _Elem dummy[1] = { 0 };
     splitpath(!s.empty() ? &s.front() : &dummy[0], func);
 }
+}
+
