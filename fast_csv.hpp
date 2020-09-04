@@ -40,20 +40,23 @@ while(*cursor) {
 */
 
 namespace fastl {
-    template <typename _Fty, char _VSC> inline const char* fast_xsv_parse_line(const char* s, _Fty&& op);
+    /*
+    * The common xsv fwd, the delimiter could be any other
+    */
+    template <int _Delimiter, typename _CStr, typename _Fty> inline _CStr fast_xsv_parse_line(_CStr s, _Fty&& op);
 
     /*
      * op prototype: op(const char* v_start, const char* v_end)
      */
-    template <typename _Fty> inline const char* fast_csv_parse_line(const char* s, _Fty&& op)
+    template <typename _CStr, typename _Fty> inline _CStr fast_csv_parse_line(_CStr s, _Fty&& op)
     {
-        return fast_xsv_parse_line<_Fty, ','>(s, std::forward<_Fty>(op));
+        return fast_xsv_parse_line<(int)','>(s, std::forward<_Fty>(op));
     }
 
     /*
      * op prototype: op(const char* v_start, const char* v_end)
      */
-    template <typename _Fty, char _VSC> inline const char* fast_xsv_parse_line(const char* s, _Fty&& op)
+    template <int _Delimiter, typename _CStr, typename _Fty> inline _CStr fast_xsv_parse_line(_CStr s, _Fty&& op)
     {
         // FSM
         enum
@@ -66,16 +69,16 @@ namespace fastl {
 
         state = normal;
 
-        const char* _Start = s; // the start of every string
-        const char* _Ptr = s; // source string iterator
-        const char* _Quote = nullptr;
+        _CStr _Start = s; // the start of every string
+        _CStr _Ptr = s; // source string iterator
+        _CStr _Quote = nullptr;
         int skipCRLF = 1;
 
     _L_loop:
         {
-            switch (*_Ptr)
+            switch ((int)*_Ptr)
             {
-            case _VSC:
+            case _Delimiter:
                 switch (state)
                 {
                 case normal:
@@ -94,7 +97,7 @@ namespace fastl {
                 }
 
                 break;
-            case '\"':
+            case (int)'\"':
                 switch (state)
                 {
                 case normal:
@@ -120,15 +123,15 @@ namespace fastl {
                 default:;
                 }
                 break;
-            case '\r':
+            case (int)'\r':
                 skipCRLF = 2;
-            case '\n':
+            case (int)'\n':
                 if (quote_field == state)
                 {
                     skipCRLF = 0;
                     break;
                 }
-            case '\0':
+            case (int)'\0':
                 switch (state)
                 {
                 case normal:
