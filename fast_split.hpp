@@ -518,3 +518,4 @@ void splitpath(std::basic_string<_Elem>& s, _Fn func) // will convert '\\' to '/
 }
 }
 
+#endif
