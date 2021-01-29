@@ -36,7 +36,7 @@
   ```cpp
   std::string buffer = read_file("xxx.csv");
   if(!buffer.empty()) {
-    fastl::fast_split_of(&buffer.front(), buffer.size(), "\r\n", [&](const char* v_start, const char* v_end, int /*delimChar*/) {
+    fastl::fast_split_of(&buffer.front(), buffer.size(), "\r\n", [&](char* v_start, char* v_end, int /*delimChar*/) {
       // if item is int or double, is more Memory Efficient parse it directly
       char endch = *v_end; // store the last char in the streaming
       *v_end = '\0';
