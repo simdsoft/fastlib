@@ -1,4 +1,7 @@
 # fastlib
+
+## DEPRECATED, migrate to https://github.com/simdsoft/xsbase
+
 * **fast_csv.hpp**: Only one API ```fast_csv_parse_line``` to help parse csv easy with FSM, no any memory alloc during parsing
   ```cpp
   std::string buffer = read_file("xxx.csv");
